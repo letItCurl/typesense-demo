@@ -32,14 +32,14 @@
   <% end %>
 
   <% if params[:q].present? %>
-    <!-- Filter query display -->
+    <!-- Search query display -->
     <div class="font-mono text-sm text-gray-600 mb-4 break-all">
-      {"filter_by":"make:[Honda,BMW] && engine_hp:>=200 && driven_wheels:rear wheel drive && msrp:[20000..50000] && year:>2014","sort_by":"year:desc"}
+      Searching for: "<%= params[:q] %>"
     </div>
   <% end %>
 
   <!-- Results count -->
-  <p class="font-bold text-gray-900 mb-6">Found <%= @pagy.count %> results.</p>
+  <p class="font-bold text-gray-900 mb-6">Found <%= number_with_delimiter(@pagy.count) %> results.</p>
 
   <!-- Cars grid -->
   <div id="cars" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -49,7 +49,7 @@
   </div>
 
   <% if @pagy.next %>
-    <%= turbo_frame_tag "cars_page_#{@pagy.next}", src: cars_path(page: @pagy.next), loading: :eager do %>
+    <%= turbo_frame_tag "cars_page_#{@pagy.next}", src: cars_path(page: @pagy.next, q: params[:q]), loading: :eager do %>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         <% 12.times do %>
           <%= render "skeleton" %>
