@@ -1,5 +1,10 @@
 class CarsController < ApplicationController
   def index
+    # Initial page render - just show the shell with lazy-loading frame
+    # Search happens via turbo frame lazy load
+  end
+
+  def search
     search_params = {
       per_page: 12,
       page: params[:page] || 1
@@ -36,8 +41,10 @@ class CarsController < ApplicationController
       @pagy, @cars = result
     end
 
-    if turbo_frame_request?
+    if params[:page].to_i > 1
       render partial: "page", locals: { pagy: @pagy, cars: @cars, q: params[:q], nl_params: @nl_params }
+    else
+      render partial: "results", locals: { pagy: @pagy, cars: @cars, q: params[:q], nl_params: @nl_params, parsed_nl_query: @parsed_nl_query }
     end
   end
 end

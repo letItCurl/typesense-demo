@@ -6,7 +6,7 @@
   </div>
 
   <% if pagy.next %>
-    <%= turbo_frame_tag "cars_page_#{pagy.next}", src: cars_path(
+    <%= turbo_frame_tag "cars_page_#{pagy.next}", src: search_cars_path(
       page: pagy.next,
       q: q,
       nl_filter_by: nl_params&.dig(:filter_by),
