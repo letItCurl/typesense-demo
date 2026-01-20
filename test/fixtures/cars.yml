@@ -1,40 +1,40 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  make: MyString
-  model: MyString
-  year: 1
-  engine_fuel_type: MyString
-  engine_hp: 9.99
-  engine_cylinders: 1
-  transmission_type: MyString
-  driven_wheels: MyString
-  number_of_doors: 1
-  market_category: 
-  vehicle_size: MyString
-  vehicle_style: MyString
-  highway_mpg: 1
-  city_mpg: 1
-  popularity: 1
-  msrp: 1
+bmw_m3:
+  make: BMW
+  model: M3
+  year: 2020
+  engine_fuel_type: premium unleaded (required)
+  engine_hp: 425.0
+  engine_cylinders: 6
+  transmission_type: AUTOMATED_MANUAL
+  driven_wheels: rear wheel drive
+  number_of_doors: 4
+  market_category: <%= ["Performance", "Luxury"].to_json %>
+  vehicle_size: Midsize
+  vehicle_style: Sedan
+  highway_mpg: 26
+  city_mpg: 17
+  popularity: 3916
+  msrp: 66500
 
-two:
-  make: MyString
-  model: MyString
-  year: 1
-  engine_fuel_type: MyString
-  engine_hp: 9.99
-  engine_cylinders: 1
-  transmission_type: MyString
-  driven_wheels: MyString
-  number_of_doors: 1
-  market_category: 
-  vehicle_size: MyString
-  vehicle_style: MyString
-  highway_mpg: 1
-  city_mpg: 1
-  popularity: 1
-  msrp: 1
+honda_civic:
+  make: Honda
+  model: Civic
+  year: 2021
+  engine_fuel_type: regular unleaded
+  engine_hp: 158.0
+  engine_cylinders: 4
+  transmission_type: AUTOMATIC
+  driven_wheels: front wheel drive
+  number_of_doors: 4
+  market_category: <%= [].to_json %>
+  vehicle_size: Compact
+  vehicle_style: Sedan
+  highway_mpg: 40
+  city_mpg: 32
+  popularity: 2500
+  msrp: 22000
 
 # == Schema Information
 #
