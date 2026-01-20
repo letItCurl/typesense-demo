@@ -36,6 +36,24 @@
     <div class="font-mono text-sm text-gray-600 mb-4 break-all">
       Searching for: "<%= params[:q] %>"
     </div>
+
+    <% if @parsed_nl_query.present? %>
+      <!-- Parsed NL Query Parameters -->
+      <div class="bg-gray-100 rounded-lg p-4 mb-6 font-mono text-sm">
+        <p class="text-gray-500 text-xs uppercase tracking-wide mb-2">Typesense NL Parameters</p>
+        <div class="space-y-1 text-gray-700">
+          <% if @parsed_nl_query["filter_by"].present? %>
+            <p><span class="text-gray-500">filter_by:</span> <%= @parsed_nl_query["filter_by"] %></p>
+          <% end %>
+          <% if @parsed_nl_query["sort_by"].present? %>
+            <p><span class="text-gray-500">sort_by:</span> <%= @parsed_nl_query["sort_by"] %></p>
+          <% end %>
+          <% if @parsed_nl_query["q"].present? && @parsed_nl_query["q"] != "*" %>
+            <p><span class="text-gray-500">q:</span> <%= @parsed_nl_query["q"] %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 
   <!-- Results count -->

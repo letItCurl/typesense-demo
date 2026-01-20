@@ -3,6 +3,12 @@ class Car < ApplicationRecord
 
   attribute :market_category, default: -> { [] }
 
+  # String fields for Typesense query_by (text search)
+  SEARCH_FIELDS = %w[
+    make model engine_fuel_type transmission_type
+    driven_wheels vehicle_size vehicle_style market_category
+  ].join(",").freeze
+
   typesense enqueue: true do
     attributes :make, :model, :year, :engine_fuel_type,
                :engine_cylinders, :transmission_type, :driven_wheels,
