@@ -1,0 +1,17 @@
+<%= turbo_frame_tag "cars_page_#{pagy.page}" do %>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    <% cars.each do |car| %>
+      <%= render car %>
+    <% end %>
+  </div>
+
+  <% if pagy.next %>
+    <%= turbo_frame_tag "cars_page_#{pagy.next}", src: cars_path(page: pagy.next), loading: :lazy do %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        <% 12.times do %>
+          <%= render "skeleton" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,30 @@
+<div id="<%= dom_id car %>" class="border border-gray-200 rounded-lg p-5 flex flex-col h-full">
+  <div class="text-sm text-gray-600 mb-1">
+    <%= car.year %> | <%= car.vehicle_style %>
+  </div>
+
+  <div class="flex items-center gap-2 mb-4">
+    <h2 class="text-2xl font-bold text-gray-900"><%= car.make %> <%= car.model %></h2>
+    <span class="bg-gray-800 text-white text-xs px-2 py-1 rounded"><%= car.vehicle_size %></span>
+  </div>
+
+  <div class="space-y-1 text-sm text-gray-700 flex-grow">
+    <p><strong>Drive wheel:</strong> <%= car.driven_wheels&.titleize %></p>
+    <p><strong>Engine:</strong> V<%= car.engine_cylinders %> / <%= car.engine_hp.to_i %> horsepower</p>
+    <p><strong>Transmission type:</strong> <%= car.transmission_type&.titleize %></p>
+    <p><strong>Fuel type:</strong> <%= car.engine_fuel_type %></p>
+    <p><strong>Number of doors:</strong> <%= car.number_of_doors %></p>
+    <p><strong>Market categories:</strong> <%= car.market_category.is_a?(Array) ? car.market_category.join(', ') : car.market_category %></p>
+  </div>
+
+  <div class="flex justify-between items-end mt-4 pt-4 border-t border-gray-100">
+    <div>
+      <p class="text-2xl font-bold text-gray-900"><%= number_to_currency(car.msrp, precision: 0) %></p>
+      <p class="text-xs text-gray-500">Starting MSRP</p>
+    </div>
+    <div class="text-right">
+      <p class="text-2xl font-bold text-gray-900"><%= car.city_mpg %>/<%= car.highway_mpg %></p>
+      <p class="text-xs text-gray-500">City/High MPG</p>
+    </div>
+  </div>
+</div>

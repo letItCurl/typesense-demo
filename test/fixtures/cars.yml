@@ -1,0 +1,62 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  make: MyString
+  model: MyString
+  year: 1
+  engine_fuel_type: MyString
+  engine_hp: 9.99
+  engine_cylinders: 1
+  transmission_type: MyString
+  driven_wheels: MyString
+  number_of_doors: 1
+  market_category: 
+  vehicle_size: MyString
+  vehicle_style: MyString
+  highway_mpg: 1
+  city_mpg: 1
+  popularity: 1
+  msrp: 1
+
+two:
+  make: MyString
+  model: MyString
+  year: 1
+  engine_fuel_type: MyString
+  engine_hp: 9.99
+  engine_cylinders: 1
+  transmission_type: MyString
+  driven_wheels: MyString
+  number_of_doors: 1
+  market_category: 
+  vehicle_size: MyString
+  vehicle_style: MyString
+  highway_mpg: 1
+  city_mpg: 1
+  popularity: 1
+  msrp: 1
+
+# == Schema Information
+#
+# Table name: cars
+#
+#  id                :bigint           not null, primary key
+#  city_mpg          :integer
+#  driven_wheels     :string
+#  engine_cylinders  :integer
+#  engine_fuel_type  :string
+#  engine_hp         :decimal(, )
+#  highway_mpg       :integer
+#  make              :string
+#  market_category   :jsonb
+#  model             :string
+#  msrp              :integer
+#  number_of_doors   :integer
+#  popularity        :integer
+#  transmission_type :string
+#  vehicle_size      :string
+#  vehicle_style     :string
+#  year              :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#

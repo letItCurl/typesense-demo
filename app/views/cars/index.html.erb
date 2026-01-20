@@ -1,0 +1,64 @@
+<% content_for :title, "Cars Search" %>
+
+<div class="w-full">
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Cars search</h1>
+    <p class="text-gray-600">
+      Powered by
+      <span class="inline-flex items-center gap-1">
+        Ruby On Rails
+      </span>
+      &amp;
+      <span class="inline-flex items-center gap-1">
+        type<strong>sense</strong>
+      </span>
+    </p>
+  </div>
+
+  <!-- Search form -->
+  <%= form_with url: cars_path, method: :get, class: "mb-6" do |f| %>
+    <div class="relative">
+      <%= f.text_field :q,
+          value: params[:q],
+          placeholder: "A honda or BMW with at least 200hp, rear wheel drive, from 20K to 50K, must be newer than 2014",
+          class: "w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-gray-900 text-white p-2 rounded cursor-pointer hover:bg-gray-700">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </button>
+    </div>
+  <% end %>
+
+  <% if params[:q].present? %>
+    <!-- Filter query display -->
+    <div class="font-mono text-sm text-gray-600 mb-4 break-all">
+      {"filter_by":"make:[Honda,BMW] && engine_hp:>=200 && driven_wheels:rear wheel drive && msrp:[20000..50000] && year:>2014","sort_by":"year:desc"}
+    </div>
+  <% end %>
+
+  <!-- Results count -->
+  <p class="font-bold text-gray-900 mb-6">Found <%= @pagy.count %> results.</p>
+
+  <!-- Cars grid -->
+  <div id="cars" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @cars.each do |car| %>
+      <%= render car %>
+    <% end %>
+  </div>
+
+  <% if @pagy.next %>
+    <%= turbo_frame_tag "cars_page_#{@pagy.next}", src: cars_path(page: @pagy.next), loading: :eager do %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        <% 12.times do %>
+          <%= render "skeleton" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @cars.empty? %>
+    <p class="text-center text-gray-500 my-10">No cars found.</p>
+  <% end %>
+</div>
