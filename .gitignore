@@ -41,3 +41,7 @@
 .claude-on-rails/sessions/
 .claude-swarm/
 claude-swarm.log
+
+# Ignore key files for decrypting credentials and more.
+/config/credentials/*.key
+

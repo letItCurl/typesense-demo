@@ -69,4 +69,5 @@ group :test do
   gem "selenium-webdriver"
 end
 gem "ruby-progressbar"
-gem "pagy"
+gem "pagy", "~> 9.0"
+gem "typesense-rails", "~> 1.0.0.rc1"

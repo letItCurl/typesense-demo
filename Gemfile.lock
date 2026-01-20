@@ -170,6 +170,8 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
+    ethon (0.15.0)
+      ffi (>= 1.15.0)
     event_stream_parser (1.0.0)
     faraday (2.14.0)
       faraday-net_http (>= 2.0, < 3.5)
@@ -298,10 +300,11 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.0-x86_64-linux-musl)
       racc (~> 1.4)
+    oj (3.16.13)
+      bigdecimal (>= 3.0)
+      ostruct (>= 0.2)
     ostruct (0.6.3)
-    pagy (43.2.6)
-      json
-      yaml
+    pagy (9.4.0)
     parallel (1.27.0)
     parser (3.3.10.1)
       ast (~> 2.4.1)
@@ -470,6 +473,14 @@ GEM
     turbo-rails (2.0.21)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
+    typesense (2.1.0)
+      oj (~> 3.16)
+      typhoeus (~> 1.4)
+    typesense-rails (1.0.0.rc4)
+      json (>= 1.5.1)
+      typesense (>= 0.13.0)
+    typhoeus (1.5.0)
+      ethon (>= 0.9.0, < 0.16.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (3.2.0)
@@ -489,7 +500,6 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yaml (0.4.0)
     zeitwerk (2.7.4)
 
 PLATFORMS
@@ -515,7 +525,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
-  pagy
+  pagy (~> 9.0)
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
@@ -530,6 +540,7 @@ DEPENDENCIES
   tailwindcss-rails
   thruster
   turbo-rails
+  typesense-rails (~> 1.0.0.rc1)
   tzinfo-data
   web-console
 

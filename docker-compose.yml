@@ -1,0 +1,15 @@
+services:
+  typesense:
+    image: typesense/typesense:27.1
+    container_name: typesense
+    ports:
+      - "8108:8108"
+    volumes:
+      - typesense-data:/data
+    environment:
+      TYPESENSE_API_KEY: xyz123
+      TYPESENSE_DATA_DIR: /data
+    command: ["--enable-cors"]
+
+volumes:
+  typesense-data:
