@@ -66,6 +66,12 @@ This tests the Typesense connection, verifies NL Search support, and performs a 
 
 ## Rake Tasks
 
+### Status & Monitoring
+
+| Task | Description |
+|------|-------------|
+| `bin/rails typesense:status` | Check collection state, document counts, schema, and sync status |
+
 ### Indexing
 
 | Task | Description |

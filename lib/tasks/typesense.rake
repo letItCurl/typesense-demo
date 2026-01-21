@@ -70,6 +70,89 @@ namespace :typesense do
     puts "Make sure Typesense is running (bin/dev or docker compose up)"
   end
 
+  desc "Check state of Typesense collection and documents"
+  task status: :environment do
+    client = typesense_client
+    collection_name = Car.typesense_collection_name
+
+    puts "=" * 60
+    puts "TYPESENSE STATUS"
+    puts "=" * 60
+
+    # Check health
+    puts "\n📡 Server Health"
+    puts "-" * 40
+    response = client.get("health")
+    if response.success?
+      puts "Status: #{response.body['ok'] ? '✅ Healthy' : '❌ Unhealthy'}"
+    else
+      puts "Status: ❌ Cannot connect (#{response.status})"
+      next
+    end
+
+    # Check collection
+    puts "\n📁 Collection: #{collection_name}"
+    puts "-" * 40
+    response = client.get("collections/#{collection_name}")
+
+    if response.status == 404
+      puts "Status: ❌ Collection not found"
+      puts "Run: bin/rails typesense:reindex_cars! to create"
+      next
+    end
+
+    collection = response.body
+    puts "Status: ✅ Exists"
+    puts "Created at: #{Time.at(collection['created_at']).strftime('%Y-%m-%d %H:%M:%S')}" if collection["created_at"]
+    puts "Default sorting: #{collection['default_sorting_field']}"
+
+    # Document counts
+    puts "\n📊 Document Counts"
+    puts "-" * 40
+    typesense_count = collection["num_documents"]
+    rails_count = Car.count
+    puts "Typesense: #{typesense_count}"
+    puts "Rails DB:  #{rails_count}"
+
+    if typesense_count == rails_count
+      puts "Sync: ✅ In sync"
+    else
+      diff = rails_count - typesense_count
+      puts "Sync: ⚠️  Out of sync (#{diff > 0 ? '+' : ''}#{diff} in Rails)"
+      puts "Run: bin/rails typesense:reindex_cars to sync"
+    end
+
+    # Schema/Fields
+    puts "\n🔧 Schema Fields"
+    puts "-" * 40
+    collection["fields"].each do |field|
+      facet = field["facet"] ? " [facet]" : ""
+      optional = field["optional"] ? " (optional)" : ""
+      puts "  #{field['name']}: #{field['type']}#{facet}#{optional}"
+    end
+
+    # Sample documents
+    puts "\n📄 Sample Documents (5)"
+    puts "-" * 40
+    response = client.get("collections/#{collection_name}/documents/search") do |req|
+      req.params = { q: "*", query_by: "make", per_page: 5 }
+    end
+
+    if response.success? && response.body["hits"].any?
+      response.body["hits"].each_with_index do |hit, i|
+        doc = hit["document"]
+        puts "  #{i + 1}. [#{doc['id']}] #{doc['year']} #{doc['make']} #{doc['model']} - $#{doc['msrp']}"
+      end
+    else
+      puts "  No documents found"
+    end
+
+    puts "\n" + "=" * 60
+  rescue Faraday::ConnectionFailed => e
+    puts "❌ Connection failed: #{e.message}"
+    puts "Make sure Typesense is running (bin/dev or docker compose up)"
+  end
+
   desc "Reindex all cars to Typesense"
   task reindex_cars: :environment do
     puts "Reindexing #{Car.count} cars to Typesense..."
