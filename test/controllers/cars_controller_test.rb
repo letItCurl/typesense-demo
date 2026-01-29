@@ -35,7 +35,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search without query returns all cars" do
-    with_mocked_search([@bmw, @honda], found: 2) do
+    with_mocked_search([ @bmw, @honda ], found: 2) do
       get search_cars_url
       assert_response :success
       assert_select "turbo-frame#search_results"
@@ -43,7 +43,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search with q param performs NL search" do
-    with_mocked_search([@bmw], found: 1, parsed_nl_query: {
+    with_mocked_search([ @bmw ], found: 1, parsed_nl_query: {
       "generated_params" => {
         "filter_by" => "make:=BMW && engine_hp:>=300",
         "sort_by" => "engine_hp:desc",
@@ -57,7 +57,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search with nl_params reuses cached params and skips NL search" do
-    with_mocked_search([@bmw], found: 1) do
+    with_mocked_search([ @bmw ], found: 1) do
       get search_cars_url, params: {
         q: "BMW with at least 300hp",
         nl_filter_by: "make:=BMW && engine_hp:>=300",
@@ -69,7 +69,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search page 1 renders results partial with turbo frame" do
-    with_mocked_search([@bmw, @honda], found: 2) do
+    with_mocked_search([ @bmw, @honda ], found: 2) do
       get search_cars_url
       assert_response :success
       assert_select "turbo-frame#search_results"
@@ -78,7 +78,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search page > 1 renders page partial" do
-    with_mocked_search([@bmw], found: 15, page: 2, has_next: true) do
+    with_mocked_search([ @bmw ], found: 15, page: 2, has_next: true) do
       get search_cars_url, params: { page: 2 }
       assert_response :success
       assert_select "turbo-frame#cars_page_2"
@@ -86,7 +86,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search returns turbo frame response without layout" do
-    with_mocked_search([@bmw, @honda], found: 2) do
+    with_mocked_search([ @bmw, @honda ], found: 2) do
       get search_cars_url, headers: { "Turbo-Frame" => "search_results" }
       assert_response :success
       assert_no_match /<html/, response.body
@@ -102,7 +102,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search pagination includes nl_params in next page link" do
-    with_mocked_search([@bmw], found: 20, has_next: true, parsed_nl_query: {
+    with_mocked_search([ @bmw ], found: 20, has_next: true, parsed_nl_query: {
       "generated_params" => {
         "filter_by" => "make:=BMW",
         "sort_by" => nil,
@@ -126,7 +126,7 @@ class CarsControllerTest < ActionDispatch::IntegrationTest
       "parsed_nl_query" => parsed_nl_query
     }
 
-    result = [pagy, cars]
+    result = [ pagy, cars ]
     result.define_singleton_method(:raw_answer) { raw_answer }
 
     original_search = Car.method(:search)

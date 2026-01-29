@@ -198,7 +198,7 @@ namespace :typesense do
   end
 
   desc "Delete Natural Language Search model"
-  task :delete_nl_model, [:model_id] => :environment do |t, args|
+  task :delete_nl_model, [ :model_id ] => :environment do |t, args|
     model_id = args[:model_id] || "openai-model"
     client = typesense_client
 
