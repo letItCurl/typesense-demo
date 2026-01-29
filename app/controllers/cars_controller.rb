@@ -4,73 +4,21 @@ class CarsController < ApplicationController
   end
 
   def search
-    perform_search
-    render_results
-  end
+    searcher = Car::Searcher.new(search_params)
+    @pagy, @cars = searcher.results
 
-  private
-
-  def perform_search
-    result = if cached_nl_params?
-               search_with_cached_params
-             elsif params[:q].present?
-               search_with_nl_query
-             else
-               search_all
-             end
-
-    @pagy, @cars = result
-  end
-
-  def cached_nl_params?
-    params[:nl_filter_by].present? || params[:nl_sort_by].present? || params[:nl_q].present?
-  end
-
-  def search_with_cached_params
-    @nl_params = {
-      filter_by: params[:nl_filter_by],
-      sort_by: params[:nl_sort_by],
-      q: params[:nl_q]
-    }
-
-    Car.search(
-      params[:nl_q].presence || "*",
-      Car::SEARCH_FIELDS,
-      base_search_params.merge(
-        filter_by: params[:nl_filter_by],
-        sort_by: params[:nl_sort_by]
-      ).compact
-    )
-  end
-
-  def search_with_nl_query
-    result = Car.search(
-      params[:q],
-      Car::SEARCH_FIELDS,
-      base_search_params.merge(nl_query: true, nl_model_id: "openai-model")
-    )
-
-    @parsed_nl_query = result.raw_answer.dig("parsed_nl_query", "generated_params")
-    @nl_params = @parsed_nl_query&.slice("filter_by", "sort_by", "q")&.symbolize_keys
-
-    result
-  end
-
-  def search_all
-    Car.search("*", Car::SEARCH_FIELDS, base_search_params)
-  end
-
-  def base_search_params
-    { per_page: 12, page: params[:page] || 1 }
-  end
-
-  def render_results
-    locals = { pagy: @pagy, cars: @cars, q: params[:q], nl_params: @nl_params }
+    locals = { pagy: @pagy, cars: @cars, q: params[:q], nl_params: searcher.nl_params }
 
     if params[:page].to_i > 1
       render partial: "page", locals: locals
     else
-      render partial: "results", locals: locals.merge(parsed_nl_query: @parsed_nl_query)
+      render partial: "results", locals: locals.merge(parsed_nl_query: searcher.parsed_nl_query)
     end
+  end
+
+  private
+
+  def search_params
+    params.permit(:q, :page, :nl_filter_by, :nl_sort_by, :nl_q)
   end
 end

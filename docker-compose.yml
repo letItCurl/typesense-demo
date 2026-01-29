@@ -11,5 +11,18 @@ services:
       TYPESENSE_DATA_DIR: /data
     command: ["--enable-cors"]
 
+  postgres:
+    image: postgres:17
+    container_name: typesense_demo_postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: typesense_demo
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: typesense_demo_development
+
 volumes:
   typesense-data:
+  postgres-data:
