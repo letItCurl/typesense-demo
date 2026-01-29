@@ -9,6 +9,8 @@ class CarsController < ApplicationController
     @q = params[:q]
     @nl_params = searcher.nl_params
     @parsed_nl_query = searcher.parsed_nl_query
+
+    render layout: false
   end
 
   private
