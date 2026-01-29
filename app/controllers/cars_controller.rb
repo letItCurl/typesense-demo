@@ -6,14 +6,9 @@ class CarsController < ApplicationController
   def search
     searcher = Car::Searcher.new(search_params)
     @pagy, @cars = searcher.results
-
-    locals = { pagy: @pagy, cars: @cars, q: params[:q], nl_params: searcher.nl_params }
-
-    if params[:page].to_i > 1
-      render partial: "page", locals: locals
-    else
-      render partial: "results", locals: locals.merge(parsed_nl_query: searcher.parsed_nl_query)
-    end
+    @q = params[:q]
+    @nl_params = searcher.nl_params
+    @parsed_nl_query = searcher.parsed_nl_query
   end
 
   private
